@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏛️ سفر در موزه تاریخ | کشف ترتیب خلفای نخستین</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  :root {
+    --cream: #f5ecd7;
+    --gold: #c9a24a;
+    --gold-dark: #8b6d24;
+    --brown: #3b2416;
+    --brown-light: #6b4423;
+    --olive: #6b7a3a;
+    --turquoise: #2e8b8b;
+    --shadow: rgba(0,0,0,0.5);
+  }
+
+  html, body {
+    height:100%;
+    font-family:'Vazirmatn', Tahoma, sans-serif;
+    background:#1a0f08;
+    overflow:hidden;
+    color:var(--cream);
+    user-select:none;
+  }
+
+  /* ============ SCENE 3D MUSEUM ============ */
+  #museum {
+    position:fixed;
+    inset:0;
+    perspective:1400px;
+    perspective-origin:50% 45%;
+    overflow:hidden;
+    background: radial-gradient(ellipse at 50% 80%, #3a2a1a 0%, #1a1008 60%, #0a0603 100%);
+  }
+
+  .scene {
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
+    transition:transform 1.4s ease;
+  }
+
+  /* Floor */
+  .floor {
+    position:absolute;
+    left:-50%; right:-50%;
+    bottom:0;
+    height:65vh;
+    background:
+      repeating-linear-gradient(90deg, #4a3420 0 60px, #3b2416 60px 62px),
+      repeating-linear-gradient(0deg, #4a3420 0 60px, #3b2416 60px 62px);
+    transform:rotateX(78deg);
+    transform-origin:bottom center;
+    box-shadow: inset 0 0 200px rgba(0,0,0,0.85);
+  }
+  .floor::after {
+    content:'';
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 90%);
+    pointer-events:none;
+  }
+
+  /* Back wall with arches */
+  .back-wall {
+    position:absolute;
+    left:50%;
+    top:20%;
+    width:1400px;
+    height:600px;
+    margin-left:-700px;
+    background:
+      linear-gradient(180deg, #2e2012 0%, #4a3420 40%, #3b2416 100%);
+    border:8px solid #2a1c0f;
+    transform:translateZ(-600px);
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+    overflow:hidden;
+  }
+
+  .arch {
+    position:absolute;
+    bottom:0;
+    width:180px;
+    height:360px;
+    background:linear-gradient(180deg, #5c4326 0%, #2e2012 100%);
+    border-radius:90px 90px 0 0;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6);
+  }
+  .arch::before {
+    content:'';
+    position:absolute;
+    inset:12px;
+    background:linear-gradient(180deg, rgba(201,162,74,0.25), rgba(0,0,0,0.5));
+    border-radius:78px 78px 0 0;
+    box-shadow: inset 0 0 30px rgba(201,162,74,0.15);
+  }
+  .arch::after {
+    content:'';
+    position:absolute;
+    top:22px; left:50%; transform:translateX(-50%);
+    width:4px; height:60px;
+    background:linear-gradient(180deg, var(--gold), transparent);
+    box-shadow:0 0 12px var(--gold);
+    border-radius:2px;
+  }
+  .arch.a1 { right:80px; }
+  .arch.a2 { right:320px; height:320px; }
+  .arch.a3 { left:320px; height:320px; }
+  .arch.a4 { left:80px; }
+
+  /* Geometric pattern band */
+  .pattern-band {
+    position:absolute;
+    top:0; left:0; right:0;
+    height:80px;
+    background:
+      repeating-linear-gradient(45deg, var(--gold-dark) 0 20px, transparent 20px 40px),
+      repeating-linear-gradient(-45deg, var(--gold-dark) 0 20px, transparent 20px 40px),
+      #2e2012;
+    opacity:0.6;
+    border-bottom:3px solid var(--gold);
+  }
+
+  /* Columns */
+  .column {
+    position:absolute;
+    bottom:12vh;
+    width:80px;
+    height:75vh;
+    background:
+      linear-gradient(90deg, #2a1c0f 0%, #6b4a2a 25%, #8b6d3a 50%, #6b4a2a 75%, #2a1c0f 100%);
+    border-radius:6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+  }
+  .column::before {
+    content:'';
+    position:absolute;
+    top:-30px; left:-15px; right:-15px;
+    height:40px;
+    background:linear-gradient(90deg, #2a1c0f, #8b6d3a, #2a1c0f);
+    border-radius:4px;
+  }
+  .column::after {
+    content:'';
+    position:absolute;
+    bottom:-20px; left:-20px; right:-20px;
+    height:30px;
+    background:linear-gradient(90deg, #2a1c0f, #8b6d3a, #2a1c0f);
+    border-radius:4px;
+  }
+  .column.c1 { right:12%; transform:translateZ(-200px); }
+  .column.c2 { left:12%; transform:translateZ(-200px); }
+
+  /* Warm lights */
+  .light-glow {
+    position:absolute;
+    top:10%;
+    width:200px; height:200px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,200,100,0.35), transparent 70%);
+    filter:blur(20px);
+    animation:flicker 4s ease-in-out infinite;
+  }
+  .light-glow.l1 { left:20%; }
+  .light-glow.l2 { right:20%; animation-delay:2s; }
+  @keyframes flicker {
+    0%,100% { opacity:0.7; }
+    50% { opacity:1; }
+  }
+
+  /* Floating dust */
+  .dust {
+    position:absolute;
+    width:3px; height:3px;
+    background:rgba(255,220,150,0.6);
+    border-radius:50%;
+    pointer-events:none;
+    animation:float 12s linear infinite;
+    box-shadow:0 0 6px rgba(255,220,150,0.8);
+  }
+  @keyframes float {
+    0% { transform:translateY(0) translateX(0); opacity:0; }
+    10% { opacity:0.8; }
+    90% { opacity:0.8; }
+    100% { transform:translateY(-100vh) translateX(40px); opacity:0; }
+  }
+
+  /* ============ START SCREEN ============ */
+  #startScreen {
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse at center, rgba(58,42,26,0.6) 0%, rgba(10,6,3,0.95) 80%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><path d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='%23c9a24a' opacity='0.08'/></svg>");
+    z-index:100;
+    text-align:center;
+    padding:20px;
+    transition:opacity 1s ease, visibility 1s;
+  }
+  #startScreen.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+
+  .title-badge {
+    font-size:clamp(3rem, 12vw, 6rem);
+    margin-bottom:10px;
+    filter:drop-shadow(0 0 20px rgba(201,162,74,0.6));
+    animation:badgePulse 3s ease-in-out infinite;
+  }
+  @keyframes badgePulse {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.05); }
+  }
+
+  #startScreen h1 {
+    font-size:clamp(1.5rem, 5vw, 2.6rem);
+    font-weight:900;
+    color:var(--gold);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8), 0 0 30px rgba(201,162,74,0.4);
+    margin-bottom:14px;
+    letter-spacing:1px;
+  }
+  #startScreen p {
+    font-size:clamp(0.9rem, 2.5vw, 1.15rem);
+    color:var(--cream);
+    opacity:0.85;
+    max-width:520px;
+    line-height:2;
+    margin-bottom:36px;
+    text-shadow:0 1px 4px rgba(0,0,0,0.9);
+  }
+
+  .btn {
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:700;
+    padding:16px 44px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    color:var(--cream);
+    background:
+      linear-gradient(180deg, #8b6d24 0%, #5c4a1a 50%, #3b2416 100%);
+    border:2px solid var(--gold);
+    box-shadow:
+      0 6px 0 #2a1c0f,
+      0 8px 24px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,220,150,0.3);
+    text-shadow:0 1px 3px rgba(0,0,0,0.8);
+    transition:all 0.15s ease;
+    letter-spacing:0.5px;
+  }
+  .btn:hover {
+    background:linear-gradient(180deg, #a68230 0%, #7a5c22 50%, #4a2f1c 100%);
+    box-shadow:
+      0 6px 0 #2a1c0f,
+      0 10px 30px rgba(201,162,74,0.4),
+      inset 0 1px 0 rgba(255,220,150,0.4);
+    transform:translateY(-1px);
+  }
+  .btn:active {
+    transform:translateY(4px);
+    box-shadow:0 2px 0 #2a1c0f, 0 4px 10px rgba(0,0,0,0.6);
+  }
+  .btn-gold {
+    background:linear-gradient(180deg, #d4af5c 0%, #a68230 50%, #6b4a1a 100%);
+    color:#2a1c0f;
+    text-shadow:0 1px 0 rgba(255,255,255,0.3);
+  }
+
+  /* ============ GAME UI ============ */
+  #game {
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:16px;
+    z-index:50;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.8s ease, visibility 0.8s;
+    overflow-y:auto;
+  }
+  #game.active { opacity:1; visibility:visible; }
+
+  /* Top bar */
+  .top-bar {
+    width:100%;
+    max-width:900px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+    padding:10px 16px;
+    background:rgba(30,18,8,0.85);
+    border:1px solid rgba(201,162,74,0.35);
+    border-radius:14px;
+    backdrop-filter:blur(8px);
+    box-shadow:0 4px 20px rgba(0,0,0,0.6);
+  }
+
+  .stat {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-weight:700;
+    font-size:0.95rem;
+    color:var(--gold);
+    text-shadow:0 1px 3px rgba(0,0,0,0.9);
+  }
+  .stat .val { color:var(--cream); font-size:1.1rem; }
+
+  .icon-btn {
+    background:rgba(60,40,20,0.9);
+    border:1px solid rgba(201,162,74,0.4);
+    color:var(--gold);
+    width:40px; height:40px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:1.1rem;
+    display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s;
+  }
+  .icon-btn:hover { background:rgba(90,60,30,0.9); border-color:var(--gold); }
+
+  /* Mission scroll */
+  .mission-scroll {
+    width:100%;
+    max-width:900px;
+    background:
+      linear-gradient(180deg, #f0e2c0 0%, #e8d5a8 50%, #dcc493 100%);
+    color:#3b2416;
+    padding:20px 30px 24px;
+    border-radius:8px;
+    position:relative;
+    box-shadow:
+      0 10px 40px rgba(0,0,0,0.7),
+      inset 0 0 60px rgba(160,120,60,0.25);
+    margin-bottom:18px;
+    font-weight:600;
+  }
+  .mission-scroll::before, .mission-scroll::after {
+    content:'';
+    position:absolute;
+    left:-8px; right:-8px;
+    height:22px;
+    background:linear-gradient(180deg, #a68230, #6b4a1a);
+    border-radius:4px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.5);
+  }
+  .mission-scroll::before { top:-10px; }
+  .mission-scroll::after { bottom:-10px; }
+  .mission-scroll h2 {
+    font-size:1.1rem;
+    color:#6b4a1a;
+    margin-bottom:8px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .mission-scroll p {
+    font-size:0.98rem;
+    line-height:1.8;
+    color:#4a3420;
+  }
+
+  /* Slots (target positions) */
+  .slots-row {
+    width:100%;
+    max-width:900px;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:12px;
+    margin-bottom:18px;
+  }
+
+  .slot {
+    position:relative;
+    min-height:110px;
+    border-radius:12px;
+    border:2px dashed rgba(201,162,74,0.5);
+    background:rgba(30,18,8,0.6);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:8px;
+    transition:all 0.25s ease;
+    box-shadow:inset 0 0 20px rgba(0,0,0,0.5);
+  }
+  .slot .slot-num {
+    position:absolute;
+    top:-12px;
+    right:-6px;
+    width:30px; height:30px;
+    background:radial-gradient(circle, #d4af5c, #6b4a1a);
+    color:#2a1c0f;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:900;
+    font-size:0.95rem;
+    box-shadow:0 3px 10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.3);
+    border:1px solid #2a1c0f;
+  }
+  .slot.over {
+    border-color:var(--gold);
+    background:rgba(201,162,74,0.15);
+    transform:scale(1.03);
+    box-shadow:inset 0 0 30px rgba(201,162,74,0.3), 0 0 30px rgba(201,162,74,0.3);
+  }
+  .slot.filled {
+    border-style:solid;
+    border-color:rgba(201,162,74,0.7);
+  }
+  .slot.correct { border-color:#4caf50; background:rgba(76,175,80,0.15); }
+  .slot.wrong { border-color:#e53935; background:rgba(229,57,53,0.15); animation:shake 0.4s; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-6px);}
+    75%{transform:translateX(6px);}
+  }
+
+  .slot .placeholder {
+    color:rgba(201,162,74,0.4);
+    font-size:0.8rem;
+    text-align:center;
+  }
+
+  /* Cards pool */
+  .cards-pool {
+    width:100%;
+    max-width:900px;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:12px;
+    margin-bottom:18px;
+    min-height:110px;
+  }
+
+  .card {
+    position:relative;
+    min-height:100px;
+    padding:14px 8px;
+    border-radius:10px;
+    background:
+      linear-gradient(135deg, #f0e2c0 0%, #e0cba0 40%, #d4b884 100%);
+    color:#3b2416;
+    font-weight:900;
+    font-size:1rem;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:grab;
+    border:2px solid #a68230;
+    box-shadow:
+      0 6px 16px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.5),
+      inset 0 0 30px rgba(160,120,60,0.2);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+    touch-action:none;
+    overflow:hidden;
+  }
+  .card::before {
+    content:'';
+    position:absolute;
+    inset:4px;
+    border:1px solid rgba(107,74,26,0.4);
+    border-radius:6px;
+    pointer-events:none;
+  }
+  .card::after {
+    content:'✦';
+    position:absolute;
+    top:4px; left:8px;
+    color:rgba(107,74,26,0.5);
+    font-size:0.8rem;
+  }
+  .card:hover {
+    transform:translateY(-3px) rotate(-1deg);
+    box-shadow:0 10px 24px rgba(0,0,0,0.7), 0 0 24px rgba(201,162,74,0.4);
+  }
+  .card.dragging {
+    opacity:0.4;
+    cursor:grabbing;
+  }
+  .card.selected {
+    transform:translateY(-4px) scale(1.05);
+    box-shadow:0 0 0 3px var(--gold), 0 10px 24px rgba(0,0,0,0.7);
+  }
+
+  .slot .card {
+    min-height:80px;
+    margin:0;
+    cursor:pointer;
+    animation:cardIn 0.35s ease;
+  }
+  @keyframes cardIn {
+    from { transform:scale(0.7); opacity:0; }
+    to { transform:scale(1); opacity:1; }
+  }
+
+  /* Action buttons */
+  .actions {
+    width:100%;
+    max-width:900px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-bottom:16px;
+  }
+  .actions .btn { padding:12px 28px; font-size:0.95rem; }
+
+  /* Feedback message */
+  .feedback {
+    width:100%;
+    max-width:900px;
+    padding:14px 20px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:700;
+    font-size:1rem;
+    opacity:0;
+    transform:translateY(-10px);
+    transition:all 0.4s ease;
+    margin-bottom:10px;
+  }
+  .feedback.show { opacity:1; transform:translateY(0); }
+  .feedback.success {
+    background:linear-gradient(135deg, rgba(76,175,80,0.25), rgba(46,139,139,0.25));
+    border:1px solid #4caf50;
+    color:#c8e6c9;
+  }
+  .feedback.error {
+    background:linear-gradient(135deg, rgba(229,57,53,0.25), rgba(139,36,36,0.25));
+    border:1px solid #e53935;
+    color:#ffcdd2;
+  }
+  .feedback.hint {
+    background:linear-gradient(135deg, rgba(201,162,74,0.2), rgba(139,109,36,0.2));
+    border:1px solid var(--gold);
+    color:#ffe082;
+  }
+
+  /* ============ SUCCESS MODAL ============ */
+  #successModal {
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(10,6,3,0.92);
+    z-index:200;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.6s, visibility 0.6s;
+    padding:20px;
+    backdrop-filter:blur(6px);
+  }
+  #successModal.show { opacity:1; visibility:visible; }
+
+  .success-box {
+    max-width:480px;
+    width:100%;
+    background:
+      linear-gradient(180deg, #f0e2c0 0%, #dcc493 100%);
+    color:#3b2416;
+    padding:36px 28px;
+    border-radius:16px;
+    text-align:center;
+    border:3px solid var(--gold);
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.9),
+      0 0 80px rgba(201,162,74,0.4),
+      inset 0 0 60px rgba(160,120,60,0.3);
+    position:relative;
+    animation:modalIn 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes modalIn {
+    from { transform:scale(0.6) rotate(-5deg); opacity:0; }
+    to { transform:scale(1) rotate(0); opacity:1; }
+  }
+  .success-box::before {
+    content:'';
+    position:absolute;
+    inset:8px;
+    border:1px solid rgba(107,74,26,0.5);
+    border-radius:10px;
+    pointer-events:none;
+  }
+  .medal {
+    width:110px; height:110px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ffe082 0%, #d4af5c 40%, #a68230 70%, #6b4a1a 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:3rem;
+    box-shadow:
+      0 0 40px rgba(255,220,130,0.7),
+      inset 0 -6px 20px rgba(107,74,26,0.8),
+      inset 0 6px 20px rgba(255,240,180,0.6);
+    animation:medalSpin 1.2s ease-out;
+    border:3px solid #6b4a1a;
+  }
+  @keyframes medalSpin {
+    from { transform:rotateY(0) scale(0.3); }
+    to { transform:rotateY(720deg) scale(1); }
+  }
+  .success-box h2 {
+    font-size:1.6rem;
+    color:#6b4a1a;
+    margin-bottom:12px;
+    text-shadow:0 1px 0 rgba(255,255,255,0.4);
+  }
+  .success-box p {
+    font-size:1rem;
+    line-height:1.9;
+    color:#4a3420;
+    margin-bottom:10px;
+  }
+  .success-box .stat-line {
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin:16px 0;
+    flex-wrap:wrap;
+  }
+  .success-box .stat-line div {
+    background:rgba(107,74,26,0.15);
+    padding:8px 18px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:0.95rem;
+    color:#3b2416;
+  }
+  .success-box .btn { margin-top:8px; }
+
+  /* ============ HINT MODAL ============ */
+  #hintModal {
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(10,6,3,0.9);
+    z-index:200;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.4s, visibility 0.4s;
+    padding:20px;
+  }
+  #hintModal.show { opacity:1; visibility:visible; }
+  .hint-box {
+    max-width:520px;
+    width:100%;
+    background:linear-gradient(180deg, #f0e2c0 0%, #dcc493 100%);
+    color:#3b2416;
+    padding:28px 26px;
+    border-radius:14px;
+    border:2px solid var(--gold);
+    box-shadow:0 20px 60px rgba(0,0,0,0.9);
+    text-align:right;
+  }
+  .hint-box h3 {
+    color:#6b4a1a;
+    font-size:1.25rem;
+    margin-bottom:16px;
+    padding-bottom:10px;
+    border-bottom:1px solid rgba(107,74,26,0.3);
+  }
+  .hint-box ul {
+    list-style:none;
+    padding:0;
+  }
+  .hint-box li {
+    padding:10px 0;
+    border-bottom:1px dashed rgba(107,74,26,0.25);
+    font-size:0.95rem;
+    line-height:1.7;
+  }
+  .hint-box li:last-child { border-bottom:none; }
+  .hint-box li strong {
+    color:#6b4a1a;
+    display:block;
+    margin-bottom:2px;
+  }
+  .hint-box .btn {
+    margin-top:16px;
+    width:100%;
+  }
+
+  /* Responsive */
+  @media (max-width:640px) {
+    .slots-row, .cards-pool { grid-template-columns:repeat(2, 1fr); }
+    .slot { min-height:90px; }
+    .card { min-height:80px; font-size:0.9rem; }
+    .slot .card { min-height:70px; }
+    .mission-scroll { padding:16px 18px 20px; }
+    .mission-scroll h2 { font-size:1rem; }
+    .mission-scroll p { font-size:0.88rem; }
+    .top-bar { padding:8px 12px; font-size:0.85rem; }
+    .stat { font-size:0.85rem; }
+    .stat .val { font-size:1rem; }
+    .column { width:50px; }
+    .arch { width:130px; height:280px; }
+    .arch.a1{right:40px;} .arch.a4{left:40px;}
+    .arch.a2{right:200px;height:240px;} .arch.a3{left:200px;height:240px;}
+    .actions .btn { padding:10px 18px; font-size:0.85rem; }
+    .success-box { padding:26px 20px; }
+    .success-box h2 { font-size:1.3rem; }
+    .medal { width:90px; height:90px; font-size:2.4rem; }
+  }
+
+  @media (max-width:400px) {
+    .slots-row, .cards-pool { gap:8px; }
+    .card { font-size:0.82rem; padding:10px 4px; }
+    .slot-num { width:26px; height:26px; font-size:0.85rem; }
+  }
+
+  /* Timer warning */
+  .timer-warning {
+    color:#ff5252 !important;
+    animation:timerPulse 1s ease-in-out infinite;
+  }
+  @keyframes timerPulse {
+    0%,100% { opacity:1; }
+    50% { opacity:0.5; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ 3D MUSEUM SCENE ============ -->
+<div id="museum">
+  <div class="scene" id="scene">
+    <div class="floor"></div>
+    <div class="back-wall">
+      <div class="pattern-band"></div>
+      <div class="arch a1"></div>
+      <div class="arch a2"></div>
+      <div class="arch a3"></div>
+      <div class="arch a4"></div>
+    </div>
+    <div class="column c1"></div>
+    <div class="column c2"></div>
+    <div class="light-glow l1"></div>
+    <div class="light-glow l2"></div>
+  </div>
+</div>
+
+<!-- ============ START SCREEN ============ -->
+<div id="startScreen">
+  <div class="title-badge">🏛️</div>
+  <h1>سفر در موزه تاریخ</h1>
+  <p>کشف ترتیب خلفای نخستین<br>در میان صفحات تاریخ قدم بگذار و ترتیب رویدادها را کشف کن.</p>
+  <button class="btn btn-gold" onclick="startGame()">🚪 ورود به موزه</button>
+</div>
+
+<!-- ============ GAME ============ -->
+<div id="game">
+  <div class="top-bar">
+    <div class="stat">⏱️ زمان: <span class="val" id="timer">۶۰</span></div>
+    <div class="stat">⭐ امتیاز: <span class="val" id="score">۰</span></div>
+    <div style="display:flex; gap:8px;">
+      <button class="icon-btn" id="soundBtn" onclick="toggleSound()" title="صدا">🔊</button>
+      <button class="icon-btn" onclick="showHint()" title="راهنما">❓</button>
+    </div>
+  </div>
+
+  <div class="mission-scroll">
+    <h2>📜 طومار مأموریت</h2>
+    <p>مأموریت شما: نام خلفای نخستین را به ترتیب تاریخی صحیح مرتب کنید.<br>
+    کارت‌ها را بکشید و در جایگاه شماره‌دار مناسب رها کنید.</p>
+  </div>
+
+  <div class="slots-row" id="slotsRow">
+    <div class="slot" data-index="0"><div class="slot-num">۱</div><div class="placeholder">جایگاه اول</div></div>
+    <div class="slot" data-index="1"><div class="slot-num">۲</div><div class="placeholder">جایگاه دوم</div></div>
+    <div class="slot" data-index="2"><div class="slot-num">۳</div><div class="placeholder">جایگاه سوم</div></div>
+    <div class="slot" data-index="3"><div class="slot-num">۴</div><div class="placeholder">جایگاه چهارم</div></div>
+  </div>
+
+  <div class="cards-pool" id="cardsPool"></div>
+
+  <div class="feedback" id="feedback"></div>
+
+  <div class="actions">
+    <button class="btn btn-gold" onclick="checkAnswer()">✓ بررسی پاسخ</button>
+    <button class="btn" onclick="resetGame()">↻ شروع دوباره</button>
+    <button class="btn" onclick="showHint()">📖 راهنمای تاریخی</button>
+  </div>
+</div>
+
+<!-- ============ SUCCESS MODAL ============ -->
+<div id="successModal">
+  <div class="success-box">
+    <div class="medal">🏅</div>
+    <h2>🎉 مأموریت با موفقیت انجام شد!</h2>
+    <p>شما ترتیب صحیح خلفای نخستین را کشف کردید و مهر طلایی تاریخ را دریافت نمودید.</p>
+    <div class="stat-line">
+      <div>⭐ امتیاز: <span id="finalScore">۰</span></div>
+      <div>⏱️ زمان باقی: <span id="finalTime">۰</span></div>
+    </div>
+    <button class="btn btn-gold" onclick="closeSuccessAndRestart()">🔄 بازی دوباره</button>
+  </div>
+</div>
+
+<!-- ============ HINT MODAL ============ -->
+<div id="hintModal">
+  <div class="hint-box">
+    <h3>📖 راهنمای تاریخی</h3>
+    <ul>
+      <li><strong>ابوبکر صدیق</strong>نخستین خلیفه (۱۱ هجری)</li>
+      <li><strong>عمر بن خطاب</strong>دومین خلیفه (۱۳ هجری)</li>
+      <li><strong>عثمان بن عفان</strong>سومین خلیفه (۲۳ هجری)</li>
+      <li><strong>علی بن ابی‌طالب (ع)</strong>چهارمین خلیفه (۳۵ هجری)</li>
+    </ul>
+    <button class="btn" onclick="closeHint()">بستن</button>
+  </div>
+</div>
+
+<script>
+/* ==================== DATA ==================== */
+const CORRECT_ORDER = ['ابوبکر', 'عمر', 'عثمان', 'علی (ع)'];
+const TIME_LIMIT = 60;
+
+let timerValue = TIME_LIMIT;
+let timerInterval = null;
+let score = 0;
+let soundOn = true;
+let audioCtx = null;
+
+/* ==================== SOUND ==================== */
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e) { audioCtx = null; }
+  }
+}
+function playTone(freq, dur, type='sine', vol=0.08) {
+  if (!soundOn || !audioCtx) return;
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
+  } catch(e) {}
+}
+function playSuccess() {
+  if (!soundOn) return;
+  initAudio();
+  [523, 659, 784, 1047].forEach((f,i) => setTimeout(() => playTone(f, 0.3, 'triangle', 0.1), i*120));
+}
+function playError() {
+  if (!soundOn) return;
+  initAudio();
+  playTone(220, 0.2, 'sawtooth', 0.06);
+  setTimeout(() => playTone(165, 0.3, 'sawtooth', 0.06), 150);
+}
+function playDrop() {
+  if (!soundOn) return;
+  initAudio();
+  playTone(440, 0.12, 'sine', 0.05);
+}
+function playPick() {
+  if (!soundOn) return;
+  initAudio();
+  playTone(660, 0.08, 'sine', 0.04);
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('soundBtn').textContent = soundOn ? '🔊' : '🔇';
+  if (soundOn) initAudio();
+}
+
+/* ==================== DUST PARTICLES ==================== */
+function createDust() {
+  const scene = document.getElementById('scene');
+  for (let i=0; i<18; i++) {
+    const d = document.createElement('div');
+    d.className = 'dust';
+    d.style.left = Math.random()*100 + '%';
+    d.style.top = (60 + Math.random()*40) + '%';
+    d.style.animationDelay = (Math.random()*12) + 's';
+    d.style.animationDuration = (10 + Math.random()*8) + 's';
+    d.style.opacity = 0.3 + Math.random()*0.5;
+    scene.appendChild(d);
+  }
+}
+createDust();
+
+/* ==================== START GAME ==================== */
+function startGame() {
+  initAudio();
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('game').classList.add('active');
+  resetGame();
+  // Parallax effect on mouse move
+  document.addEventListener('mousemove', parallax);
+}
+
+function parallax(e) {
+  const scene = document.getElementById('scene');
+  if (!scene) return;
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 10;
+  scene.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+}
+
+/* ==================== GAME STATE ==================== */
+let draggedCard = null;
+let selectedCard = null;
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i=a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function resetGame() {
+  score = 0;
+  document.getElementById('score').textContent = '۰';
+  timerValue = TIME_LIMIT;
+  document.getElementById('timer').textContent = toFaNum(TIME_LIMIT);
+  document.getElementById('timer').classList.remove('timer-warning');
+  clearInterval(timerInterval);
+
+  // Clear slots
+  document.querySelectorAll('.slot').forEach((s, i) => {
+    s.className = 'slot';
+    s.innerHTML = `<div class="slot-num">${toFaNum(i+1)}</div><div class="placeholder">جایگاه ${['اول','دوم','سوم','چهارم'][i]}</div>`;
+  });
+
+  // Clear pool and refill shuffled
+  const pool = document.getElementById('cardsPool');
+  pool.innerHTML = '';
+  const shuffled = shuffle(CORRECT_ORDER);
+  shuffled.forEach(name => {
+    const card = createCardElement(name);
+    pool.appendChild(card);
+  });
+
+  hideFeedback();
+  setupDragAndDrop();
+
+  // Start timer
+  timerInterval = setInterval(() => {
+    timerValue--;
+    document.getElementById('timer').textContent = toFaNum(timerValue);
+    if (timerValue <= 10) document.getElementById('timer').classList.add('timer-warning');
+    if (timerValue <= 0) {
+      clearInterval(timerInterval);
+      timeUp();
+    }
+  }, 1000);
+}
+
+function toFaNum(n) {
+  const fa = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  return String(n).split('').map(c => fa[parseInt(c)] || c).join('');
+}
+
+function createCardElement(name) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.draggable = true;
+  card.dataset.name = name;
+  card.textContent = name;
+  return card;
+}
+
+/* ==================== DRAG & DROP ==================== */
+function setupDragAndDrop() {
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('dragstart', handleDragStart);
+    card.addEventListener('dragend', handleDragEnd);
+    card.addEventListener('touchstart', handleTouchStart, {passive:true});
+    card.addEventListener('click', handleCardClick);
+  });
+
+  document.querySelectorAll('.slot').forEach(slot => {
+    slot.addEventListener('dragover', handleDragOver);
+    slot.addEventListener('dragleave', handleDragLeave);
+    slot.addEventListener('drop', handleDrop);
+    slot.addEventListener('click', handleSlotClick);
+    slot.addEventListener('touchstart', (e) => {
+      if (selectedCard) { e.preventDefault(); dropSelectedIntoSlot(slot); }
+    }, {passive:false});
+  });
+
+  document.getElementById('cardsPool').addEventListener('dragover', e => e.preventDefault());
+  document.getElementById('cardsPool').addEventListener('drop', handleDropToPool);
+  document.getElementById('cardsPool').addEventListener('click', (e) => {
+    if (selectedCard && e.target.id === 'cardsPool') {
+      returnCardToPool(selectedCard);
+    }
+  });
+}
+
+function handleDragStart(e) {
+  draggedCard = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  playPick();
+}
+function handleDragEnd(e) {
+  this.classList.remove('dragging');
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('over'));
+}
+function handleDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  this.classList.add('over');
+}
+function handleDragLeave(e) {
+  this.classList.remove('over');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  this.classList.remove('over');
+  if (draggedCard) {
+    placeCardInSlot(draggedCard, this);
+    draggedCard = null;
+  }
+}
+
+function handleDropToPool(e) {
+  e.preventDefault();
+  if (draggedCard) {
+    returnCardToPool(draggedCard);
+    draggedCard = null;
+  }
+}
+
+/* ==================== TOUCH SUPPORT ==================== */
+function handleTouchStart(e) {
+  // Use click-based select for touch (more reliable than drag on mobile)
+  // Handled by click listener
+}
+
+/* ==================== CLICK-BASED (Mobile friendly) ==================== */
+function handleCardClick(e) {
+  e.stopPropagation();
+  if (this.parentElement.classList.contains('slot')) {
+    // Card inside a slot — remove it back to pool
+    returnCardToPool(this);
+    playDrop();
+    return;
+  }
+  // Card in pool — select/deselect
+  if (selectedCard === this) {
+    this.classList.remove('selected');
+    selectedCard = null;
+  } else {
+    if (selectedCard) selectedCard.classList.remove('selected');
+    selectedCard = this;
+    this.classList.add('selected');
+    playPick();
+  }
+}
+
+function handleSlotClick(e) {
+  if (selectedCard) {
+    placeCardInSlot(selectedCard, this);
+    selectedCard.classList.remove('selected');
+    selectedCard = null;
+  }
+}
+
+function dropSelectedIntoSlot(slot) {
+  if (selectedCard) {
+    placeCardInSlot(selectedCard, slot);
+    selectedCard.classList.remove('selected');
+    selectedCard = null;
+  }
+}
+
+/* ==================== PLACEMENT LOGIC ==================== */
+function placeCardInSlot(card, slot) {
+  // If slot already has a card, return it to pool
+  const existing = slot.querySelector('.card');
+  if (existing) {
+    returnCardToPool(existing);
+  }
+  // Remove placeholder
+  const ph = slot.querySelector('.placeholder');
+  if (ph) ph.remove();
+
+  // Move card
+  card.classList.remove('selected', 'dragging');
+  slot.appendChild(card);
+  slot.classList.add('filled');
+  playDrop();
+  hideFeedback();
+}
+
+function returnCardToPool(card) {
+  const pool = document.getElementById('cardsPool');
+  const oldSlot = card.parentElement;
+  if (oldSlot.classList.contains('slot')) {
+    oldSlot.classList.remove('filled', 'correct', 'wrong');
+    const idx = parseInt(oldSlot.dataset.index);
+    if (!oldSlot.querySelector('.placeholder')) {
+      const ph = document.createElement('div');
+      ph.className = 'placeholder';
+      ph.textContent = `جایگاه ${['اول','دوم','سوم','چهارم'][idx]}`;
+      oldSlot.appendChild(ph);
+    }
+  }
+  card.classList.remove('selected', 'dragging');
+  pool.appendChild(card);
+  hideFeedback();
+}
+
+/* ==================== CHECK ANSWER ==================== */
+function checkAnswer() {
+  const slots = document.querySelectorAll('.slot');
+  const values = [];
+  let allFilled = true;
+
+  slots.forEach(s => {
+    const card = s.querySelector('.card');
+    if (!card) { allFilled = false; values.push(null); }
+    else values.push(card.dataset.name);
+  });
+
+  if (!allFilled) {
+    showFeedback('⚠️ لطفاً هر چهار کارت را در جایگاه‌ها قرار دهید.', 'hint');
+    playError();
+    return;
+  }
+
+  let allCorrect = true;
+  slots.forEach((slot, i) => {
+    const card = slot.querySelector('.card');
+    slot.classList.remove('correct', 'wrong');
+    if (card && card.dataset.name === CORRECT_ORDER[i]) {
+      slot.classList.add('correct');
+    } else {
+      slot.classList.add('wrong');
+      allCorrect = false;
+    }
+  });
+
+  if (allCorrect) {
+    clearInterval(timerInterval);
+    score = timerValue * 10 + 50; // Bonus based on remaining time
+    document.getElementById('score').textContent = toFaNum(score);
+    playSuccess();
+    showFeedback('✅ آفرین! ترتیب کاملاً صحیح است.', 'success');
+    setTimeout(() => showSuccessModal(), 800);
+  } else {
+    playError();
+    // Count how many correct
+    let correctCount = 0;
+    slots.forEach((slot, i) => {
+      const card = slot.querySelector('.card');
+      if (card && card.dataset.name === CORRECT_ORDER[i]) correctCount++;
+    });
+    if (correctCount === 3) {
+      showFeedback('🔍 بسیار نزدیک! فقط یک جایگاه جابه‌جا است. دوباره فکر کنید.', 'hint');
+    } else if (correctCount > 0) {
+      showFeedback(`🔍 ${toFaNum(correctCount)} مورد درست است. به ترتیب تاریخی دقت کنید.`, 'hint');
+    } else {
+      showFeedback('❌ ترتیب درست نیست. از راهنمای تاریخی کمک بگیرید.', 'error');
+    }
+    // Remove wrong highlight after 1.5s
+    setTimeout(() => {
+      slots.forEach(s => s.classList.remove('wrong'));
+    }, 1500);
+  }
+}
+
+function timeUp() {
+  playError();
+  showFeedback('⏰ زمان تمام شد! دوباره تلاش کنید.', 'error');
+  document.querySelectorAll('.slot').forEach(s => s.classList.add('wrong'));
+}
+
+function showFeedback(msg, type) {
+  const fb = document.getElementById('feedback');
+  fb.textContent = msg;
+  fb.className = 'feedback show ' + type;
+}
+function hideFeedback() {
+  const fb = document.getElementById('feedback');
+  fb.classList.remove('show');
+}
+
+/* ==================== MODALS ==================== */
+function showSuccessModal() {
+  document.getElementById('finalScore').textContent = toFaNum(score);
+  document.getElementById('finalTime').textContent = toFaNum(timerValue) + ' ثانیه';
+  document.getElementById('successModal').classList.add('show');
+}
+function closeSuccessAndRestart() {
+  document.getElementById('successModal').classList.remove('show');
+  resetGame();
+}
+function showHint() {
+  document.getElementById('hintModal').classList.add('show');
+}
+function closeHint() {
+  document.getElementById('hintModal').classList.remove('show');
+}
+
+/* ==================== INIT ==================== */
+window.addEventListener('load', () => {
+  // Pre-populate pool for preview (game resets on start anyway)
+  const pool = document.getElementById('cardsPool');
+  if (pool && !pool.children.length) {
+    shuffle(CORRECT_ORDER).forEach(name => pool.appendChild(createCardElement(name)));
+  }
+});
+</script>
+</body>
+</html>
